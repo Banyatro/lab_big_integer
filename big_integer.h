@@ -59,7 +59,7 @@ public:
     explicit operator bool() const;        // true if != 0
 
     // ======================== I/O ================================
-
+    
     friend std::ostream& operator<<(std::ostream& os, const BigInteger& value);
     friend std::istream& operator>>(std::istream& is, BigInteger& value);
 
@@ -73,4 +73,19 @@ private:
 
     std::vector<int> digits_;  // digits (least significant first)
     bool negative_ = false;    // true if the number is negative
+
+    // custom
+
+    bool abs_less(const BigInteger& other) const { // проверка по модулю
+        if (digits_.size() != other.digits_.size()) {
+            return digits_.size() < other.digits_.size(); // если разные по размеру, проверка, дальше можно не проверять
+    }
+
+    for (int i = digits_.size() - 1; i >= 0; --i) { // от старших к младшему при одинаковых. размерах. 
+        if (digits_[i] != other.digits_[i]) {
+            return digits_[i] < other.digits_[i];
+        }
+    }
+    return false; // this == rhs
+    }
 };
